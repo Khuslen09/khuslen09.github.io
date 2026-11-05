@@ -53,8 +53,8 @@
 
       <h3>1. 수집하는 정보</h3>
       <ul>
-        <li><b>계정 정보</b>: 이메일 주소, 이름(닉네임), 프로필 사진. Google 또는 Apple 로그인을 사용하면 해당 서비스가 제공하는 이메일·이름을 받습니다. 카카오 로그인을 사용하면 카카오계정 이메일과 닉네임을 받습니다. Apple의 "나의 이메일 가리기"를 선택하면 Apple이 제공하는 대리 이메일만 받습니다.</li>
-        <li><b>위치 정보</b>: 이동 경로 및 활동(러닝·워킹·사이클링) 기록을 위한 GPS 좌표. 이용자가 기록을 시작했을 때, 또는 "항상 허용"을 선택한 경우 기록 중 화면이 꺼져 있을 때에만 수집합니다.</li>
+        <li><b>계정 정보</b>: 이메일 주소, 이름(닉네임), 프로필 사진. Google 또는 Apple 로그인을 사용하면 해당 서비스가 제공하는 이메일·이름을 받습니다. 카카오 로그인을 사용하면 카카오계정 이메일과 닉네임을 받습니다. 이메일로 가입하면 이메일 주소와 비밀번호를 사용하며, 비밀번호는 Google Firebase가 암호화해 보관하므로 운영자는 알 수 없습니다. 이메일 주소 확인을 위해 인증 코드를 메일로 보내며, 코드는 해시 형태로만 최대 10분간 보관한 뒤 삭제합니다. Apple의 "나의 이메일 가리기"를 선택하면 Apple이 제공하는 대리 이메일만 받습니다.</li>
+        <li><b>위치 정보</b>: 이동 경로 및 활동(러닝·워킹·사이클링) 기록을 위한 GPS 좌표. 이용자가 활동 기록을 시작했을 때, 또는 설정에서 "자동 발자취 기록"을 켠 경우(기본값: 꺼짐)에만 수집합니다. 위치 권한을 "항상 허용"으로 설정하면 기록 중 화면이 꺼지거나 앱이 백그라운드에 있어도 수집됩니다.</li>
         <li><b>사진·메모</b>: 이용자가 직접 촬영하거나 선택해 핀에 첨부한 사진과 작성한 메모.</li>
         <li><b>이용자가 만든 기록</b>: 경로, 활동 기록(거리·시간·페이스 등), 핀, 장소명.</li>
       </ul>
@@ -76,33 +76,36 @@
         <li><b>Google Maps Platform</b> (Maps SDK, Places API) — 지도 표시, 주변 장소 검색 (위치 좌표 전송)</li>
         <li><b>Google Gemini API</b> — AI 장소 추천 (위치 좌표와 이용자가 입력한 요청 문구 전송, 계정 정보 미전송)</li>
         <li><b>Kakao Local API</b> — 한국 내 주변 장소명 검색 (위치 좌표 전송)</li>
+        <li><b>Apple 위치 서비스</b> — 좌표를 지역명·주소로 변환 (위치 좌표 전송)</li>
+        <li><b>Google Firebase Cloud Functions 및 Gmail</b> — 이메일 가입 시 인증 코드 메일 발송 (이메일 주소 전송)</li>
         <li><b>Google 로그인 / Apple로 로그인 / 카카오 로그인</b> — 이용자가 선택한 경우의 로그인 인증 (카카오: 카카오계정 이메일·닉네임)</li>
         <li><b>Instagram 및 기타 공유 대상 앱</b> — 이용자가 "공유"를 직접 눌렀을 때에만, 이용자가 만든 이미지가 선택한 앱으로 전달됩니다.</li>
       </ul>
       <p>위 서비스 중 일부는 해외(미국 등)에 서버를 두고 있어, 해당 정보가 국외로 이전·보관될 수 있습니다.</p>
 
       <h3>4. 보관 및 파기</h3>
-      <p>정보는 이용자가 회원 탈퇴할 때까지 보관됩니다. 앱의 <b>설정 → 회원 탈퇴</b>를 통해 언제든지 계정을 삭제할 수 있으며, 탈퇴 시 서버에 저장된 계정·경로·핀·사진 데이터와 기기 내 로컬 데이터가 즉시 삭제됩니다. Apple로 로그인한 계정은 탈퇴 시 Apple 로그인 연결도 해제됩니다.</p>
+      <p>정보는 이용자가 회원 탈퇴할 때까지 보관됩니다. 앱의 <b>설정 → 회원 탈퇴</b>를 통해 언제든지 계정을 삭제할 수 있으며, 탈퇴 시 서버에 저장된 계정·경로·핀·사진 데이터와 기기 내 로컬 데이터가 즉시 삭제됩니다. Apple 또는 카카오로 로그인한 계정은 탈퇴 시 해당 서비스와의 로그인 연결도 해제됩니다.</p>
 
       <h3>5. 이용자의 권리</h3>
-      <p>이용자는 언제든지 자신의 정보를 열람·수정·삭제할 수 있고, 위치·카메라·사진 권한은 기기 설정에서 언제든지 철회할 수 있습니다. 권한을 허용하지 않아도 해당 기능을 제외한 나머지 기능은 이용할 수 있습니다.</p>
+      <p>이용자는 언제든지 자신의 정보를 열람·수정·삭제할 수 있고, 위치·카메라·사진·동작 및 피트니스 권한은 기기 설정에서 언제든지 철회할 수 있습니다. 권한을 허용하지 않아도 해당 기능을 제외한 나머지 기능은 이용할 수 있습니다.</p>
 
       <h3>6. 권한 사용</h3>
       <ul>
         <li><b>위치</b>: 이동 경로 기록, 거리 계산, 주변 장소 표시. "항상 허용" 시 기록 중 화면이 꺼져 있어도 경로가 끊기지 않습니다.</li>
         <li><b>카메라</b>: 핀에 첨부할 사진 촬영</li>
         <li><b>사진 보관함</b>: 저장된 사진 첨부 및 촬영·공유 이미지 저장</li>
+        <li><b>동작 및 피트니스</b>: 활동 공유 카드에 하루 걸음 수 표시 (기기 안에서만 읽으며 서버로 전송하지 않음)</li>
       </ul>
 
       <h3>7. 아동의 개인정보</h3>
       <p>앱은 만 14세 미만 아동을 대상으로 하지 않으며, 만 14세 미만 아동의 정보를 알면서 수집하지 않습니다.</p>
 
       <h3>8. 문의처 및 개인정보 보호책임자</h3>
-      <p>개인정보 보호책임자: Khuslen (개인 개발자)<br>이메일: <a href="mailto:ch.huslen0621@gmail.com">ch.huslen0621@gmail.com</a></p>
+      <p>개인정보 보호책임자: Khuslen (개인 개발자)<br>이메일: <a href="mailto:tracen.app@gmail.com">tracen.app@gmail.com</a></p>
 
       <h3>9. 변경 고지</h3>
       <p>본 방침이 변경되면 이 페이지와 앱을 통해 공지합니다.</p>
-      <p class="muted">시행일: 2026년 10월 9일</p>
+      <p class="muted">시행일: 2026년 11월 5일</p>
     </section>
 
     <section id="terms">
@@ -130,13 +133,13 @@
       <p>GPS 위치, 거리, 페이스, AI 추천 결과는 기기와 환경에 따라 정확하지 않을 수 있으며 참고용으로 제공됩니다. 운영자는 고의 또는 중대한 과실이 없는 한 서비스 이용으로 발생한 손해에 책임을 지지 않습니다.</p>
       <h3>제7조 (탈퇴)</h3>
       <p>이용자는 앱의 설정 화면에서 언제든지 탈퇴할 수 있으며, 탈퇴 시 데이터는 개인정보 처리방침에 따라 삭제됩니다.</p>
-      <p class="muted">시행일: 2026년 10월 9일</p>
+      <p class="muted">시행일: 2026년 11월 5일</p>
     </section>
 
     <section id="support">
       <h2>고객 지원</h2>
       <p>문의, 버그 제보, 계정 삭제 요청은 아래 이메일로 보내 주세요. 보통 3영업일 안에 답변드립니다.</p>
-      <p><a href="mailto:ch.huslen0621@gmail.com">ch.huslen0621@gmail.com</a></p>
+      <p><a href="mailto:tracen.app@gmail.com">tracen.app@gmail.com</a></p>
     </section>
   </div>
 
@@ -148,8 +151,8 @@
 
       <h3>1. Information we collect</h3>
       <ul>
-        <li><b>Account information</b>: email address, name (nickname) and profile photo. If you sign in with Google or Apple, we receive the email and name provided by that service. If you sign in with Kakao, we receive your Kakao Account email and nickname. If you choose Apple's "Hide My Email", we only receive Apple's relay address.</li>
-        <li><b>Location</b>: GPS coordinates to record your routes and activities (running, walking, cycling). Collected only while you are recording, or — if you choose "Always Allow" — while a recording continues with the screen off.</li>
+        <li><b>Account information</b>: email address, name (nickname) and profile photo. If you sign in with Google or Apple, we receive the email and name provided by that service. If you sign in with Kakao, we receive your Kakao Account email and nickname. If you sign up with email, you use an email address and password; the password is stored encrypted by Google Firebase and is never visible to us. To verify your email address we send you a verification code, which we keep only as a hash for up to 10 minutes and then delete. If you choose Apple's "Hide My Email", we only receive Apple's relay address.</li>
+        <li><b>Location</b>: GPS coordinates to record your routes and activities (running, walking, cycling). Collected only while you are recording an activity, or if you turn on "Auto Path Tracking" in Settings (off by default). If you set location access to "Always Allow", collection continues while the screen is off or the app is in the background.</li>
         <li><b>Photos and notes</b>: photos you take or select and notes you write and attach to pins.</li>
         <li><b>Content you create</b>: routes, activity records (distance, time, pace, etc.), pins and place names.</li>
       </ul>
@@ -171,33 +174,36 @@
         <li><b>Google Maps Platform</b> (Maps SDK, Places API) — maps and nearby place search (location coordinates)</li>
         <li><b>Google Gemini API</b> — AI place recommendations (location coordinates and the request text you enter; no account information)</li>
         <li><b>Kakao Local API</b> — nearby place names in Korea (location coordinates)</li>
+        <li><b>Apple location services</b> — converting coordinates into place names and addresses (location coordinates)</li>
+        <li><b>Google Firebase Cloud Functions and Gmail</b> — sending the verification code email when you sign up with email (email address)</li>
         <li><b>Sign in with Google / Sign in with Apple / Kakao Login</b> — authentication, if you choose them (Kakao: Kakao Account email and nickname)</li>
         <li><b>Instagram and other share targets</b> — only when you tap "Share", the image you created is passed to the app you choose</li>
       </ul>
       <p>Some of these providers store data on servers outside your country (for example in the United States).</p>
 
       <h3>4. Retention and deletion</h3>
-      <p>We keep your data until you delete your account. You can delete your account at any time in <b>Settings → Delete account</b>. Your account, routes, pins and photos are then deleted from our servers immediately, along with the data stored on your device. For accounts created with Sign in with Apple, the Apple sign-in link is revoked as well.</p>
+      <p>We keep your data until you delete your account. You can delete your account at any time in <b>Settings → Delete account</b>. Your account, routes, pins and photos are then deleted from our servers immediately, along with the data stored on your device. For accounts created with Sign in with Apple or Kakao Login, the link with that sign-in service is revoked as well.</p>
 
       <h3>5. Your choices</h3>
-      <p>You can view, edit or delete your information at any time, and you can withdraw location, camera and photo permissions in your device settings. The rest of the app keeps working without them.</p>
+      <p>You can view, edit or delete your information at any time, and you can withdraw location, camera, photo and Motion &amp; Fitness permissions in your device settings. The rest of the app keeps working without them.</p>
 
       <h3>6. Permissions</h3>
       <ul>
         <li><b>Location</b>: recording routes, calculating distance, showing nearby places. With "Always Allow", a recording keeps going while the screen is off.</li>
         <li><b>Camera</b>: taking photos to attach to pins</li>
         <li><b>Photo library</b>: attaching saved photos and saving the photos and share images you create</li>
+        <li><b>Motion &amp; Fitness</b>: showing your daily step count on activity share cards (read on your device only, never sent to our servers)</li>
       </ul>
 
       <h3>7. Children</h3>
       <p>The app is not directed at children under 14, and we do not knowingly collect their information.</p>
 
       <h3>8. Contact</h3>
-      <p>Privacy contact: Khuslen (independent developer)<br>Email: <a href="mailto:ch.huslen0621@gmail.com">ch.huslen0621@gmail.com</a></p>
+      <p>Privacy contact: Khuslen (independent developer)<br>Email: <a href="mailto:tracen.app@gmail.com">tracen.app@gmail.com</a></p>
 
       <h3>9. Changes</h3>
       <p>If this policy changes, we will post the update on this page and in the app.</p>
-      <p class="muted">Effective: October 9, 2026</p>
+      <p class="muted">Effective: November 5, 2026</p>
     </section>
 
     <section id="terms-en">
@@ -225,13 +231,13 @@
       <p>GPS location, distance, pace and AI recommendations may be inaccurate depending on your device and environment and are provided for reference only. Except for intentional misconduct or gross negligence, we are not liable for damages arising from use of the service.</p>
       <h3>7. Account deletion</h3>
       <p>You can delete your account at any time in Settings; your data is then deleted as described in the Privacy Policy.</p>
-      <p class="muted">Effective: October 9, 2026</p>
+      <p class="muted">Effective: November 5, 2026</p>
     </section>
 
     <section id="support-en">
       <h2>Support</h2>
       <p>For questions, bug reports or account deletion requests, email us. We usually reply within 3 business days.</p>
-      <p><a href="mailto:ch.huslen0621@gmail.com">ch.huslen0621@gmail.com</a></p>
+      <p><a href="mailto:tracen.app@gmail.com">tracen.app@gmail.com</a></p>
     </section>
   </div>
 
@@ -243,8 +249,8 @@
 
       <h3>1. Цуглуулдаг мэдээлэл</h3>
       <ul>
-        <li><b>Бүртгэлийн мэдээлэл</b>: имэйл хаяг, нэр (хоч), профайл зураг. Google эсвэл Apple-ээр нэвтэрвэл тухайн үйлчилгээнээс өгсөн имэйл, нэрийг хүлээн авна. Kakao-гаар нэвтэрвэл Kakao бүртгэлийн имэйл болон хочийг хүлээн авна. Apple-ийн "Имэйлээ нуух" (Hide My Email)-ыг сонговол зөвхөн Apple-ийн дамжуулах хаягийг авна.</li>
-        <li><b>Байршил</b>: маршрут болон дасгал (гүйлт, алхалт, дугуй унах)-ыг бүртгэх GPS координат. Зөвхөн та бүртгэл эхлүүлсэн үед, эсвэл "Үргэлж зөвшөөрөх"-ийг сонгосон бол бүртгэл үргэлжилж байх хооронд дэлгэц унтарсан үед цуглуулна.</li>
+        <li><b>Бүртгэлийн мэдээлэл</b>: имэйл хаяг, нэр (хоч), профайл зураг. Google эсвэл Apple-ээр нэвтэрвэл тухайн үйлчилгээнээс өгсөн имэйл, нэрийг хүлээн авна. Kakao-гаар нэвтэрвэл Kakao бүртгэлийн имэйл болон хочийг хүлээн авна. Имэйлээр бүртгүүлбэл имэйл хаяг, нууц үг ашиглана; нууц үгийг Google Firebase шифрлэн хадгалдаг тул бид харах боломжгүй. Имэйл хаягийг баталгаажуулахын тулд баталгаажуулах код илгээх бөгөөд кодыг зөвхөн хэш хэлбэрээр 10 минут хүртэл хадгалаад устгана. Apple-ийн "Имэйлээ нуух" (Hide My Email)-ыг сонговол зөвхөн Apple-ийн дамжуулах хаягийг авна.</li>
+        <li><b>Байршил</b>: маршрут болон дасгал (гүйлт, алхалт, дугуй унах)-ыг бүртгэх GPS координат. Зөвхөн та дасгалын бүртгэл эхлүүлсэн үед, эсвэл Тохиргоонд "Маршрутийг автоматаар бүртгэх"-ийг асаасан үед (анхдагчаар унтраалттай) цуглуулна. Байршлын зөвшөөрлийг "Үргэлж зөвшөөрөх" болговол бүртгэлийн үед дэлгэц унтарсан эсвэл апп арын горимд байсан ч цуглуулна.</li>
         <li><b>Зураг ба тэмдэглэл</b>: таны авсан эсвэл сонгосон зураг, пин-д хавсаргасан тэмдэглэл.</li>
         <li><b>Таны үүсгэсэн контент</b>: маршрут, дасгалын бүртгэл (зай, хугацаа, хурд гэх мэт), пин болон газрын нэр.</li>
       </ul>
@@ -266,33 +272,36 @@
         <li><b>Google Maps Platform</b> (Maps SDK, Places API) — газрын зураг, ойролцоох газар хайх (байршлын координат)</li>
         <li><b>Google Gemini API</b> — AI газар санал болгох (байршлын координат болон таны оруулсан хүсэлтийн текст; бүртгэлийн мэдээлэл илгээхгүй)</li>
         <li><b>Kakao Local API</b> — Солонгос дахь ойролцоох газрын нэр (байршлын координат)</li>
+        <li><b>Apple байршлын үйлчилгээ</b> — координатыг газрын нэр, хаяг болгон хөрвүүлэх (байршлын координат)</li>
+        <li><b>Google Firebase Cloud Functions ба Gmail</b> — имэйлээр бүртгүүлэх үед баталгаажуулах код илгээх (имэйл хаяг)</li>
         <li><b>Google-ээр нэвтрэх / Apple-ээр нэвтрэх / Kakao-гаар нэвтрэх</b> — сонгосон тохиолдолд нэвтрэлт баталгаажуулах (Kakao: Kakao бүртгэлийн имэйл, хоч)</li>
         <li><b>Instagram болон бусад хуваалцах апп</b> — зөвхөн та "Хуваалцах" дарсан үед таны үүсгэсэн зургийг сонгосон апп руу дамжуулна</li>
       </ul>
       <p>Эдгээр үйлчилгээний зарим нь таны улсаас гадна (жишээ нь АНУ) серверт өгөгдөл хадгалдаг.</p>
 
       <h3>4. Хадгалах хугацаа ба устгах</h3>
-      <p>Таныг бүртгэлээ устгах хүртэл өгөгдлийг хадгална. Аппын <b>Тохиргоо → Бүртгэл устгах</b> хэсгээс хүссэн үедээ бүртгэлээ устгах боломжтой. Ингэснээр серверт хадгалагдсан бүртгэл, маршрут, пин, зураг болон төхөөрөмж дээрх өгөгдөл шууд устгагдана. Apple-ээр нэвтэрсэн бүртгэлийн хувьд Apple-ийн нэвтрэлтийн холболт мөн цуцлагдана.</p>
+      <p>Таныг бүртгэлээ устгах хүртэл өгөгдлийг хадгална. Аппын <b>Тохиргоо → Бүртгэл устгах</b> хэсгээс хүссэн үедээ бүртгэлээ устгах боломжтой. Ингэснээр серверт хадгалагдсан бүртгэл, маршрут, пин, зураг болон төхөөрөмж дээрх өгөгдөл шууд устгагдана. Apple эсвэл Kakao-гаар нэвтэрсэн бүртгэлийн хувьд тухайн үйлчилгээтэй нэвтрэлтийн холболт мөн цуцлагдана.</p>
 
       <h3>5. Таны эрх</h3>
-      <p>Та өөрийн мэдээллийг хүссэн үедээ харах, засах, устгах боломжтой бөгөөд байршил, камер, зургийн сангийн зөвшөөрлийг төхөөрөмжийн тохиргооноос цуцалж болно. Эдгээр зөвшөөрөлгүйгээр аппын бусад функц хэвийн ажиллана.</p>
+      <p>Та өөрийн мэдээллийг хүссэн үедээ харах, засах, устгах боломжтой бөгөөд байршил, камер, зургийн сан, хөдөлгөөн ба фитнесийн зөвшөөрлийг төхөөрөмжийн тохиргооноос цуцалж болно. Эдгээр зөвшөөрөлгүйгээр аппын бусад функц хэвийн ажиллана.</p>
 
       <h3>6. Зөвшөөрлүүд</h3>
       <ul>
         <li><b>Байршил</b>: маршрут бүртгэх, зай тооцоолох, ойролцоох газар харуулах. "Үргэлж зөвшөөрөх" үед дэлгэц унтарсан ч бүртгэл тасрахгүй.</li>
         <li><b>Камер</b>: пин-д хавсаргах зураг авах</li>
         <li><b>Зургийн сан</b>: хадгалсан зураг хавсаргах, авсан болон хуваалцах зургийг хадгалах</li>
+        <li><b>Хөдөлгөөн ба фитнес</b>: дасгалын хуваалцах карт дээр өдрийн алхмын тоог харуулах (зөвхөн төхөөрөмж дээр уншина, серверт илгээхгүй)</li>
       </ul>
 
       <h3>7. Хүүхэд</h3>
       <p>Энэхүү апп нь 14-өөс доош насны хүүхдэд зориулагдаагүй бөгөөд бид тэдний мэдээллийг санаатайгаар цуглуулдаггүй.</p>
 
       <h3>8. Холбоо барих</h3>
-      <p>Нууцлалын асуудал хариуцагч: Khuslen (бие даасан хөгжүүлэгч)<br>Имэйл: <a href="mailto:ch.huslen0621@gmail.com">ch.huslen0621@gmail.com</a></p>
+      <p>Нууцлалын асуудал хариуцагч: Khuslen (бие даасан хөгжүүлэгч)<br>Имэйл: <a href="mailto:tracen.app@gmail.com">tracen.app@gmail.com</a></p>
 
       <h3>9. Өөрчлөлт</h3>
       <p>Энэхүү бодлого өөрчлөгдвөл энэ хуудас болон аппаар дамжуулан мэдэгдэнэ.</p>
-      <p class="muted">Хүчинтэй болсон огноо: 2026 оны 10-р сарын 9</p>
+      <p class="muted">Хүчинтэй болсон огноо: 2026 оны 11-р сарын 5</p>
     </section>
 
     <section id="terms-mn">
@@ -320,13 +329,13 @@
       <p>GPS байршил, зай, хурд болон AI-ийн санал нь төхөөрөмж, орчноос хамааран алдаатай байж болох тул зөвхөн лавлагаа болгон өгнө. Санаатай буруутай үйлдэл эсвэл ноцтой хайхрамжгүй байдлаас бусад тохиолдолд үйлчилгээ ашигласнаас үүдсэн хохиролд бид хариуцлага хүлээхгүй.</p>
       <h3>7. Бүртгэл устгах</h3>
       <p>Та Тохиргоо хэсгээс хүссэн үедээ бүртгэлээ устгах боломжтой бөгөөд өгөгдөл тань Нууцлалын бодлогод заасны дагуу устгагдана.</p>
-      <p class="muted">Хүчинтэй болсон огноо: 2026 оны 10-р сарын 9</p>
+      <p class="muted">Хүчинтэй болсон огноо: 2026 оны 11-р сарын 5</p>
     </section>
 
     <section id="support-mn">
       <h2>Тусламж</h2>
       <p>Асуулт, алдааны мэдээлэл, бүртгэл устгах хүсэлтээ доорх имэйлээр илгээнэ үү. Ихэвчлэн 3 ажлын өдрийн дотор хариу өгдөг.</p>
-      <p><a href="mailto:ch.huslen0621@gmail.com">ch.huslen0621@gmail.com</a></p>
+      <p><a href="mailto:tracen.app@gmail.com">tracen.app@gmail.com</a></p>
     </section>
   </div>
 
